@@ -1,7 +1,12 @@
 <%- include('partials/header'); %> 
+<% if (locals.errors && locals.errors.profile) { %>
+	<% locals.errors.profile.forEach(function(error) { %>
+		<p class="alert alert-primary" role="alert"><%= error %></p>
+	<% }) %>
+<% } %>
 <form action="/account" method="post" enctype="multipart/form-data">
-    <input type="text" name="displayName" placeholder="Display Name">
-    <input type="email" name="email" placeholder="Email">
+    <input type="text" name="displayName" placeholder="Display Name" value="<%= locals.user.displayName %>">
+    <input type="email" name="email" placeholder="Email" value="<%= locals.user.email %>">
     <input type="file" name="avatar">
       <button type="submit">Update</button>
   </form>

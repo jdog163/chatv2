@@ -1,13 +1,58 @@
+<% 
+var channels = locals.channels
+var owned = ("owned" in  channels) ? channels.owned : false ;
+var subscribed = ("subscribed" in  channels) ? channels.subscribed : false ;
+var channelErrors = locals.errors.channels
+var general = ("general" in channelErrors) ? channelErrors.general : false ;
+%>
+
 <%- include('partials/header'); %> 
+ <% if (locals.errors && locals.errors.general) { %>
+          <% locals.errors.general.forEach(function(error) { %>
+            <p class="alert alert-primary" role="alert"><%= error %></p>
+          <% }) %>
 <div id="main">
   <div class="container-fluid">
     <div class="row">
       <div id="sidebar" class="col-md-3">
         <h2>Sidebar</h2>
+       
+       
+  	
+
+<div id="owned-channels" class="user-channels">
+	<h4>Your Channels</h4>
+<% if (owned) { %>
+	<ul>
+	<% owned.forEach(function(channel) { %>
+		<li>
+			<img src="<%= channel.image %>" alt="<%= channel.name %>">
+			<a href="/channel/<%= channel.id %>/"><%= channel.name %></a>
+			<a href="/channels/delete/<%= channel.id %>/"><i class="fa fa-trash" aria-hidden="true"></i></a>
+		</li>
+	<% }) %>
+	</ul>
+<% }  %>
+</div>
+<div id="subscribed-channels" >
+	<h4>Subscribed Channels</h4>
+<% if (subscribed) { %>
+	<ul>
+	<% subscribed.forEach(function(channel) { %>
+		<li>
+			<img src="<%= channel.image %>" alt="<%= channel.name %>">
+			<a href="/channel/<%= channel.slug %>/"><%= channel.name %></a>
+		</li>
+	<% }) %>
+	</ul>
+<% }  %>
+</div>
       </div>  
       <main role="main" class="col-md-9">
         <h1>Channels</h1>
         <% var users = locals.channels.users %>
+ 
+<% } %>
         <form id="channel-create-form" action="/channels/add" method="post" enctype="multipart/form-data">
           <input type="text" class="form-control" name="name" placeholder="Display Name" value="">
           <input type="file" class="custom-file-input" name="avatar" id="avatar-upload">
